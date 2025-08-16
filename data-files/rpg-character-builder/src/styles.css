@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@400;700&family=Montserrat:wght@600;800&display=swap');
+
+:root {
+  --bg: #0f172a;    /* slate-900 */
+  --card: #111827;  /* gray-900 */
+  --ink: #e5e7eb;   /* gray-200 */
+  --accent: #22c55e;/* green-500 */
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: radial-gradient(1400px 700px at 10% -10%, rgba(34,197,94,.18), transparent 60%) ,
+              radial-gradient(1400px 700px at 110% 40%, rgba(59,130,246,.15), transparent 60%) ,
+              var(--bg);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+.wrapper {
+  display: flex; flex-direction: column; min-height: 100vh; width: 75%; margin: 0 auto;
+  background: #fff; color: #000;
+}
+.banner { background: #000; color: #fff; text-align: center; }
+.banner-img { max-width: 100%; height: auto; }
+.main-content { display: flex; flex: 1; }
+.navbar { flex: 0 0 200px; padding: 20px; }
+.navbar ul { list-style: none; margin: 0; padding: 0; }
+.navbar li { padding: 8px; }
+.navbar a { text-decoration: none; color: inherit; }
+.navbar li:hover { background: #f2f2f2; cursor: pointer; }
+.content { flex: 1; padding: 20px; }
+.footer { background: #000; color: #fff; text-align: center; padding: 20px; }

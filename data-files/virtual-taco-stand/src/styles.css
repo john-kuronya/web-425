@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Import Google Fonts (single line, no breaks) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@700&display=swap');
+
+/* Reset */
+body, header, nav, main, section, footer, img, figure, figcaption, div, ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+html, body {
+  height: 100%;
+}
+
+/* Layout wrapper */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 75%;
+  margin: 0 auto;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Banner */
+.banner {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+}
+.banner-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Main area */
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar nav */
+.navbar {
+  flex: 0 0 200px;
+  padding: 20px;
+}
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar li {
+  padding: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Lato', sans-serif;
+}
+.navbar li:hover {
+  background-color: #f2f2f2; /* was #F2F2F2F2 (invalid for some browsers) */
+  color: #0056b3;
+  cursor: pointer;
+}
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 20px;
+  font-family: 'Merriweather', serif;
+}
+
+/* Footer */
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  font-family: 'Lato', sans-serif;
+}
+.footer a {
+  color: #ffffff;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
