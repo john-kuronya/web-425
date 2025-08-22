@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="shell">
       <header class="banner">
@@ -12,11 +12,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
         <nav class="nav">
           <a href="#" class="brand">RPG<span>Builder</span></a>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Classes</a></li>
-            <li><a href="#">Races</a></li>
-            <li><a href="#">Builder</a></li>
-            <li><a href="#">About</a></li>
+            <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+            <li><a routerLink="/players" routerLinkActive="active">Players</a></li>
+            <li><a routerLink="/signin" routerLinkActive="active">Sign In</a></li>
+            <li><a routerLink="/create-character" routerLinkActive="active">Create Character</a></li>
+            <li><a routerLink="/create-guild" routerLinkActive="active">Create Guild</a></li>
+            <li><a routerLink="/character-faction" routerLinkActive="active">Character Faction</a></li>
           </ul>
         </nav>
       </header>
@@ -25,7 +26,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
         <aside class="side">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#">Create Character</a></li>
+            <li><a routerLink="/create-character" routerLinkActive="active">Create Character</a></li>
             <li><a href="#">Saved Characters</a></li>
             <li><a href="#">Dice Roller</a></li>
             <li><a href="#">Export Sheet</a></li>
@@ -39,11 +40,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
       <footer class="footer">
         <nav class="footer-nav">
-          <a href="#">Home</a> ·
-          <a href="#">Classes</a> ·
-          <a href="#">Races</a> ·
-          <a href="#">Builder</a> ·
-          <a href="#">About</a>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a> ·
+          <a routerLink="/players" routerLinkActive="active">Players</a> ·
+          <a routerLink="/signin" routerLinkActive="active">Sign In</a> ·
+          <a routerLink="/create-character" routerLinkActive="active">Create Character</a> ·
+          <a routerLink="/create-guild" routerLinkActive="active">Create Guild</a> ·
+          <a routerLink="/character-faction" routerLinkActive="active">Character Faction</a>
         </nav>
         <p>&copy; 2025 RPG Character Builder</p>
       </footer>
@@ -65,6 +67,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     .nav ul { list-style: none; display: flex; gap: 18px; margin: 0; padding: 0; }
     .nav a { color: var(--ink); text-decoration: none; font-weight: 600; }
     .nav a:hover { color: #a7f3d0; }
+    .nav a.active { border-bottom: 2px solid var(--accent); } /* highlight active nav */
 
     .main { flex: 1; display: grid; grid-template-columns: 220px 1fr; gap: 24px; width: min(1080px, 92%); margin: 24px auto; }
     .side {
@@ -76,6 +79,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     .side li { padding: 6px 0; }
     .side a { color: var(--ink); text-decoration: none; }
     .side a:hover { color: var(--accent); }
+    .side a.active { font-weight: bold; color: var(--accent); }
 
     .content {
       background: var(--card); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: 24px;
@@ -86,6 +90,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     .footer-nav { margin-bottom: 8px; }
     .footer-nav a { color: #cbd5e1; text-decoration: none; margin: 0 6px; }
     .footer-nav a:hover { color: var(--accent); text-decoration: underline; }
+    .footer-nav a.active { color: var(--accent); font-weight: 600; }
 
     @media (max-width: 900px) {
       .nav { position: static; height: auto; padding: 12px 16px; }
