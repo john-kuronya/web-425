@@ -1,16 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="shell">
       <header class="banner">
         <img class="banner-img" src="assets/banner_3.jpg" alt="RPG Character Builder banner">
         <nav class="nav">
           <a href="#" class="brand">RPG<span>Builder</span></a>
+
           <ul>
             <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
             <li><a routerLink="/players" routerLinkActive="active">Players</a></li>
@@ -19,6 +23,16 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
             <li><a routerLink="/create-guild" routerLinkActive="active">Create Guild</a></li>
             <li><a routerLink="/character-faction" routerLinkActive="active">Character Faction</a></li>
           </ul>
+
+          <div class="auth-ui">
+            <ng-container *ngIf="isAuth; else signedOut">
+              <span class="welcome">Welcome {{ email }}</span>
+              <a href="#" (click)="signout()">Sign out</a>
+            </ng-container>
+            <ng-template #signedOut>
+              <a routerLink="/signin" routerLinkActive="active">Sign In</a>
+            </ng-template>
+          </div>
         </nav>
       </header>
 
@@ -55,19 +69,25 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     .shell { min-height: 100vh; display: flex; flex-direction: column; }
     .banner { position: relative; }
     .banner-img { width: 100%; height: 180px; object-fit: cover; opacity: .25; display: block; }
+
     .nav {
       position: absolute; inset: 0 0 auto 0; height: 64px; display: flex;
       align-items: center; justify-content: space-between; padding: 0 24px;
+      gap: 16px;
     }
     .brand {
       font-family: Montserrat, sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: .5px;
       color: var(--ink); text-decoration: none;
     }
     .brand span { color: var(--accent); }
+
     .nav ul { list-style: none; display: flex; gap: 18px; margin: 0; padding: 0; }
     .nav a { color: var(--ink); text-decoration: none; font-weight: 600; }
     .nav a:hover { color: #a7f3d0; }
-    .nav a.active { border-bottom: 2px solid var(--accent); } /* highlight active nav */
+    .nav a.active { border-bottom: 2px solid var(--accent); }
+
+    .auth-ui { display: flex; align-items: center; gap: 12px; }
+    .welcome { color: var(--ink); opacity: .9; }
 
     .main { flex: 1; display: grid; grid-template-columns: 220px 1fr; gap: 24px; width: min(1080px, 92%); margin: 24px auto; }
     .side {
@@ -93,10 +113,27 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     .footer-nav a.active { color: var(--accent); font-weight: 600; }
 
     @media (max-width: 900px) {
-      .nav { position: static; height: auto; padding: 12px 16px; }
+      .nav { position: static; height: auto; padding: 12px 16px; flex-wrap: wrap; }
       .banner-img { height: 120px; }
       .main { grid-template-columns: 1fr; }
     }
   `]
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  isAuth = false;
+  email = '';
+
+  constructor(private auth: AuthService, private cookies: CookieService) {}
+
+  ngOnInit(): void {
+    this.auth.getAuthState().subscribe((isAuth) => {
+      this.isAuth = !!isAuth;
+      this.email = isAuth ? this.cookies.get('session_user') : '';
+    });
+  }
+
+  signout(): void {
+    this.auth.signout();
+  }
+}
+

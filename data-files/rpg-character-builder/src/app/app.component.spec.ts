@@ -35,6 +35,6 @@ describe('AppComponent (routing/nav)', () => {
   it('Should navigate to PlayersComponent via router (programmatic)', async () => {
     const harness = await RouterTestingHarness.create();
     const instance = await harness.navigateByUrl('/players', PlayersComponent);
-    expect(instance).toBeTruthy(); // PlayersComponent became active
+    expect(instance).toBeTruthy();
   });
 });
