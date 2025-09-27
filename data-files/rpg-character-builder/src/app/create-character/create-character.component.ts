@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { CharacterListComponent, Character } from './character-list/character-list.component';
 
 type Gender = 'Male' | 'Female' | 'Other';
 type CharClass = 'Warrior' | 'Mage' | 'Rogue';
-
-export interface Character {
-  id: number;
-  name: string;
-  gender: Gender;
-  class: CharClass;
-}
 
 interface CharacterFormModel {
   name: string;
@@ -21,7 +15,7 @@ interface CharacterFormModel {
 @Component({
   selector: 'app-create-character',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CharacterListComponent],
   template: `
     <section>
       <h1>Create Character</h1>
@@ -69,34 +63,15 @@ interface CharacterFormModel {
         </form>
       </div>
 
-      <h2 class="mt">Created Characters</h2>
-
-      <div class="table-wrap" role="region" aria-labelledby="created-caption" tabindex="0">
-        <table class="roster" aria-describedby="created-desc">
-          <caption id="created-caption">Your Character Roster</caption>
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Class</th>
-            </tr>
-          </thead>
-          <tbody id="created-desc">
-            <tr class="created-row" *ngFor="let c of characters">
-              <td>{{ c.id }}</td>
-              <td>{{ c.name }}</td>
-              <td>{{ c.gender }}</td>
-              <td>{{ c.class }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- Child component receives data via @Input and can request a clear via @Output -->
+      <app-character-list
+        [characters]="characters"
+        (clearRequested)="onClearCharacters()"
+      ></app-character-list>
     </section>
   `,
   styles: [`
     :host { display:block; }
-
     h1 {
       margin: 0 0 .25rem;
       font-family: Montserrat, sans-serif;
@@ -126,33 +101,7 @@ interface CharacterFormModel {
       background: #22c55e; color: #06270f; font-weight: 700;
     }
     button:disabled { opacity: .6; cursor: not-allowed; }
-    .ghost { background: transparent; color: #e5e7eb; border-color: rgba(255,255,255,.25); }
-
-    .mt { margin-top: 18px; }
-
-    .table-wrap {
-      margin-top: 8px;
-      background: rgba(17,24,39,.9);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 12px;
-      padding: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-      overflow: auto;
-    }
-    table.roster {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 520px;
-      color: #e5e7eb;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    }
-    caption {
-      text-align: left; padding: 8px 4px 12px; color: #93c5fd;
-      font-weight: 700; font-family: Montserrat, sans-serif;
-    }
-    thead th { text-align: left; padding: 10px 12px; border-bottom: 2px solid rgba(255,255,255,.12); }
-    tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.06); }
-    tbody tr:nth-child(even) { background: rgba(255,255,255,.03); }
+    .ghost { background: transparent; color: #e5e7eb; border-color: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.25); }
 
     @media (max-width: 900px) {
       form { grid-template-columns: 1fr; }
@@ -163,17 +112,10 @@ export class CreateCharacterComponent {
   genders: Gender[] = ['Male', 'Female', 'Other'];
   classes: CharClass[] = ['Warrior', 'Mage', 'Rogue'];
 
-  // form model (template-driven)
   model: CharacterFormModel = { name: '', gender: 'Male', class: 'Warrior' };
-
-  // storage for created characters
   characters: Character[] = [];
 
-  // TDD-friendly: expose generateId()
-  generateId(): number {
-    // integer in [1, 1000]
-    return Math.floor(Math.random() * 1000) + 1;
-  }
+  generateId(): number { return Math.floor(Math.random() * 1000) + 1; }
 
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
@@ -194,5 +136,8 @@ export class CreateCharacterComponent {
     this.model = { ...defaults };
     form.resetForm(defaults);
   }
-}
 
+  onClearCharacters(): void {
+    this.characters = [];
+  }
+}
